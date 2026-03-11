@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的数字花园 | 个人博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #2a9d8f;
+            --secondary-color: #e76f51;
+            --text-color: #333;
+            --light-text: #666;
+            --bg-color: #fafafa;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 40px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--light-text);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .posts-section {
+            flex: 3;
+        }
+        
+        .sidebar {
+            flex: 1;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--text-color);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--secondary-color);
+        }
+        
+        /* Post Cards */
+        .post-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .post-image {
+            height: 200px;
+            background: linear-gradient(45deg, #a8e6cf, #dcedc1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .post-content {
+            padding: 25px;
+        }
+        
+        .post-date {
+            color: var(--light-text);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .post-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+        
+        .post-title:hover {
+            color: var(--primary-color);
+        }
+        
+        .post-excerpt {
+            color: var(--light-text);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .read-more {
+            display: inline-block;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 5px 0;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .read-more:hover {
+            border-bottom: 1px solid var(--primary-color);
+            padding-bottom: 3px;
+        }
+        
+        /* Sidebar */
+        .about-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .about-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            color: var(--text-color);
+        }
+        
+        .about-text {
+            color: var(--light-text);
+            text-align: center;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+        
+        .social-link:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--text-color);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .copyright {
+            margin-top: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .post-image {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            header {
+                padding: 30px 0;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .post-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1 class="logo">我的数字花园</h1>
+            <p class="tagline">在这里记录我的思考、学习和探索。欢迎来到我的数字世界！</p>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Posts Section -->
+            <div class="posts-section">
+                <h2 class="section-title">最新文章</h2>
+                
+                <!-- Post 1 -->
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-code"></i> 技术探索
+                    </div>
+                    <div class="post-content">
+                        <div class="post-date">
+                            <i class="far fa-calendar"></i> 2023年10月15日
+                        </div>
+                        <h3 class="post-title">Cloudflare Workers 实战：构建无服务器应用</h3>
+                        <p class="post-excerpt">深入探讨如何使用 Cloudflare Workers 构建高性能、低成本的无服务器应用。从基础概念到实际案例，全面解析其优势与应用场景。</p>
+                        <a href="#" class="read-more">阅读更多 →</a>
+                    </div>
+                </div>
+                
+                <!-- Post 2 -->
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-mountain"></i> 生活随笔
+                    </div>
+                    <div class="post-content">
+                        <div class="post-date">
+                            <i class="far fa-calendar"></i> 2023年10月10日
+                        </div>
+                        <h3 class="post-title">在数字洪流中保持专注力</h3>
+                        <p class="post-excerpt">在这个信息爆炸的时代，如何保持深度思考和专注力？分享我的实践经验和有效方法，帮助你在数字世界中找到内心的平静。</p>
+                        <a href="#" class="read-more">阅读更多 →</a>
+                    </div>
+                </div>
+                
+                <!-- Post 3 -->
+                <div class="post-card">
+                    <div class="post-image">
+                        <i class="fas fa-book"></i> 读书笔记
+                    </div>
+                    <div class="post-content">
+                        <div class="post-date">
+                            <i class="far fa-calendar"></i> 2023年10月5日
+                        </div>
+                        <h3 class="post-title">《原子习惯》：微小改变带来巨大成果</h3>
+                        <p class="post-excerpt">詹姆斯·克利尔的《原子习惯》揭示了习惯养成的科学原理。本文总结了书中的核心观点，并结合个人实践分享如何建立持久的好习惯。</p>
+                        <a href="#" class="read-more">阅读更多 →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="about-card">
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="about-title">关于我</h3>
+                    <p class="about-text">一名全栈开发者，热爱技术、设计和写作。相信代码可以改变世界，也相信文字可以传递思想。目前正在探索 Web3 和人工智能的交叉领域。</p>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="about-card">
+                    <h3 class="about-title">分类</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                            <a href="#" style="color: var(--text-color); text-decoration: none; transition: color 0.3s;">技术 (12)</a>
+                        </li>
+                        <li style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                            <a href="#" style="color: var(--text-color); text-decoration: none; transition: color 0.3s;">生活 (8)</a>
+                        </li>
+                        <li style="margin: 10px 0; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                            <a href="#" style="color: var(--text-color); text-decoration: none; transition: color 0.3s;">读书 (5)</a>
+                        </li>
+                        <li style="margin: 10px 0; padding: 8px 0;">
+                            <a href="#" style="color: var(--text-color); text-decoration: none; transition: color 0.3s;">思考 (7)</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <h3 style="font-size: 1.5rem; margin-bottom: 10px;">我的数字花园</h3>
+                <p>记录成长，分享思考，连接世界</p>
+                <div class="copyright">
+                    &copy; 2023 我的数字花园. 保留所有权利。
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
