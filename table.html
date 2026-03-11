@@ -99,13 +99,13 @@
         if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">暂无数据</td></tr>'; return; }
         data.forEach(item => {
             const tr = document.createElement('tr');
-            tr.innerHTML = \`
-                <td><input type="checkbox" class="row-checkbox" value="\${item.id}" \${selectedIds.has(item.id)?'checked':''} onchange="toggleSelection(\${item.id})"></td>
-                <td>\${item.id}</td><td><code>\${item.day}</code></td><td>\${item.account}</td>
-                <td><span class="badge bg-info text-dark">\${item.currency}</span></td>
-                <td class="fw-bold">\${item.amount}</td><td class="text-muted small">\${item.remark||'-'}</td>
-                <td class="small text-muted">\${new Date(item.created_at).toLocaleString()}</td>
-            \`;
+            tr.innerHTML = `
+                <td><input type="checkbox" class="row-checkbox" value="${item.id}" ${selectedIds.has(item.id)?'checked':''} onchange="toggleSelection(${item.id})"></td>
+                <td>${item.id}</td><td><code>${item.day}</code></td><td>${item.account}</td>
+                <td><span class="badge bg-info text-dark">${item.currency}</span></td>
+                <td class="fw-bold">${item.amount}</td><td class="text-muted small">${item.remark||'-'}</td>
+                <td class="small text-muted">${new Date(item.created_at).toLocaleString()}</td>
+            `;
             tbody.appendChild(tr);
         });
         updateDeleteButton();
