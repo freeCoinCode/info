@@ -18,18 +18,18 @@ export default {
     // 1. 处理首页 (返回 HTML)
     const value = request.headers.get("x-time");
     const hr=getUTC8YMDH()
-    if ((path === '/' && method === 'GET')||!value || value !== hr) {
+    if (path === '/' && method === 'GET') {
       return new Response(indexHtml, {
         headers: { 'Content-Type': 'text/html;charset=UTF-8' },
       });
     }
-   if (path === '/table' && method === 'GET') {
+   if (path === '/table' && method === 'GET' && value && value === hr) {
       return new Response(tableHtml, {
         headers: { 'Content-Type': 'text/html;charset=UTF-8' },
       });
     }
     
-    if (path === '/cron'){
+    if (path === '/cron' && value && value === hr){
       const url = await env.K.get("url");
       const token = await env.K.get("token");
       const parts = path.split('/');
@@ -44,7 +44,7 @@ export default {
           });
     }
 
-    if (path.startsWith("/get/")){
+    if (path.startsWith("/get/") && value && value === hr){
       console.log("get")
       const parts = path.split('/');
       const key=parts[2]
@@ -64,7 +64,7 @@ export default {
           headers: { 'Content-Type': 'application/json' }
         });
     }
-    if (path.startsWith("/set/")){
+    if (path.startsWith("/set/") && value && value === hr){
       const parts = path.split('/');
       const key=parts[2]
       if (!key) {
@@ -119,7 +119,7 @@ export default {
         return new Response(`KV 错误: ${e.message}`, { status: 500 });
       }
     }
-    if (path === '/clean' && method === 'DELETE') {
+    if (path === '/clean' && method === 'DELETE' && value && value === hr) {
       const stmt = env.DB.prepare("DELETE FROM coin_info ");
       await stmt.run();
       return new Response(`Clean done`, { status: 200 });
