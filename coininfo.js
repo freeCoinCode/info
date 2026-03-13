@@ -77,8 +77,8 @@ export async function queryCoinInfo(db, filters = {}) {
     // 模糊查询 (搜索 remark, account, currency)
     if (filters.search) {
         const searchTerm = `%${filters.search}%`;
-        sql += ` AND (remark LIKE ? OR account LIKE ? OR currency LIKE ?)`;
-        params.push(searchTerm, searchTerm, searchTerm);
+        sql += ` AND (remark LIKE ? OR account LIKE ? OR currency LIKE ? or day like ?)`;
+        params.push(searchTerm, searchTerm, searchTerm, searchTerm);
     }
 
     sql += ` ORDER BY day DESC, created_at DESC`;
