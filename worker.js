@@ -38,7 +38,13 @@ export default {
       if(!key){
         acId='1019';
       }
-      await doTask(url,token,acId,env.DB)
+	  const names=await env.K.get("names")||''
+	  const tokenList = names
+      .toLowerCase()
+      .split(',')
+      .map(item => item.trim())
+      .filter(item => item !== ""); // 移除因连续逗号或首尾空格产生的空项
+      await doTask(url,token,acId,env.DB,tokenList)
       return new Response("Suce", {
             headers: { 'Content-Type': 'text/html;charset=UTF-8' },
           });
