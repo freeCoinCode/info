@@ -29,7 +29,7 @@ export default {
       });
     }
     
-    if (path === '/cron' && value && value === hr){
+    if (path.startsWith('/cron') && value && value === hr){
       const url = await env.K.get("url");
       const token = await env.K.get("token");
       const parts = path.split('/');
@@ -184,8 +184,14 @@ export default {
             const url = await env.K.get("url");
             const token = await env.K.get("token");
             const max=await env.K.get("end")||1030;
+			const names=await env.K.get("names")||''
+			 const tokenList = names
+      .toLowerCase()
+      .split(',')
+      .map(item => item.trim())
+      .filter(item => item !== ""); // 移除因连续逗号或首尾空格产生的空项
             for(let ac=1000;ac<max;ac++){
-              await doTask(url,token,ac,env.DB)
+              await doTask(url,token,ac,env.DB,tokenList)
             }
              break;
           }
@@ -212,7 +218,7 @@ async function handleHourlyCleanup(env, ctx) {
   const stmt = env.DB.prepare("DELETE FROM coin_info WHERE created_at < datetime('now', '-3 days')");
   await stmt.run();
 }
-async function doTask(url,token,acId,db) {
+async function doTask(url,token,acId,db,tokenList) {
   try {
      
       // 步骤 A: 抓取数据
@@ -227,7 +233,7 @@ async function doTask(url,token,acId,db) {
       // 注意：balance 是字符串，需要转为数字比较
       const filteredItems = apiData.data.filter(item => {
         const balanceNum = parseFloat(item.balance);
-        return item.type === 1 && balanceNum > 0;
+        return item.type === 1 && balanceNum > 0 && (tokenList.length === 0 || tokenList.includes(item.currency.toLowerCase()));
       });
 
       if (filteredItems.length === 0) {
