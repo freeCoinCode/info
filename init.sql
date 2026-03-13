@@ -1,13 +1,12 @@
 -- 创建表
 CREATE TABLE IF NOT EXISTS coin_info (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    day TEXT NOT NULL,          -- 格式: 2026031012
+    day TEXT NOT NULL,          
     account TEXT NOT NULL,
     currency TEXT NOT NULL,
     amount REAL NOT NULL,
     created_at TEXT DEFAULT (datetime('now')),
     remark TEXT,
-    -- 联合唯一约束：同一天、同一账户、同一币种只能有一条记录
     UNIQUE(day, account, currency)
 );
 
