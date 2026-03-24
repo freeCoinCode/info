@@ -30,21 +30,31 @@ export default {
     }
     
     if (path.startsWith('/cron') && value && value === hr){
-      const url = await env.K.get("url");
-      const token = await env.K.get("token");
+      
       const parts = path.split('/');
       const key=parts[2]
-      let acId=key;
-      if(!key){
-        acId='1019';
-      }
-	  const names=await env.K.get("names")||''
-	  const tokenList = names
+     
+	  const url = await env.K.get("url");
+            const token = await env.K.get("token");
+            const max=await env.K.get("end")||1019;
+            const min=await env.K.get("end")||1018;
+			const names=await env.K.get("names")||''
+			 const tokenList = names
       .toLowerCase()
       .split(',')
       .map(item => item.trim())
       .filter(item => item !== ""); // 移除因连续逗号或首尾空格产生的空项
-      await doTask(url,token,acId,env.DB,tokenList)
+            const start=Number(min);
+             const end=Number(max)
+      if(key){
+         await doTask(url,token,key,env.DB,tokenList)
+      }else{
+        for(let ac=start;ac<=end;ac++){
+              await doTask(url,token,ac,env.DB,tokenList)
+            }
+      }
+             
+      
       return new Response("Suce", {
             headers: { 'Content-Type': 'text/html;charset=UTF-8' },
           });
@@ -185,18 +195,21 @@ export default {
 
       // 根据 cron 表达式路由到不同的处理函数
       switch (cronPattern) {
-        case '1 */1 * * *':
+        case '1 */12 * * *':
            {
             const url = await env.K.get("url");
             const token = await env.K.get("token");
-            const max=await env.K.get("end")||1030;
+            const max=await env.K.get("end")||1019;
+            const min=await env.K.get("end")||1018;
 			const names=await env.K.get("names")||''
 			 const tokenList = names
       .toLowerCase()
       .split(',')
       .map(item => item.trim())
       .filter(item => item !== ""); // 移除因连续逗号或首尾空格产生的空项
-            for(let ac=1000;ac<max;ac++){
+            const start=Number(min);
+             const end=Number(max)
+             for(let ac=start;ac<=end;ac++){
               await doTask(url,token,ac,env.DB,tokenList)
             }
              break;
